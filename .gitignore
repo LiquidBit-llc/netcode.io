@@ -8,10 +8,6 @@
 *.vcxproj.filters
 *.sln
 
-# Makefiles
-Makefile
-*.make
-
 # Misc
 *.txt
 *.7z
@@ -21,6 +17,11 @@ Makefile
 # Sublime text
 *.sublime-project
 *.sublime-workspace
+
+# Binary files
+*.o
+*.dylib
+*.so
 
 # Directories we don't ever want to commit
 bin
