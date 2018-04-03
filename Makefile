@@ -8,7 +8,7 @@ ifeq ($(UNAME_S), Linux)
 else
 	CC=clang
 	CC_FLAGS=-I../libsodium/src/libsodium/include
-	LINKER_FLAGS=-dynamiclib -lsodium
+	LINKER_FLAGS=-dynamiclib -L../libsodium/src/libsodium/.libs -lsodium
 	TARGET=libnetcode-io.dylib
 endif
 
