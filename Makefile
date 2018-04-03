@@ -2,10 +2,12 @@ UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S), Linux)
 	CC=gcc
+	CC_FLAGS=
 	LINKER_FLAGS=-shared -Wl,--whole-archive -l:libsodium.a -Wl,--no-whole-archive 
 	TARGET=libnetcode-io.so
 else
 	CC=clang
+	CC_FLAGS=-I../libsodium/src/libsodium/include
 	LINKER_FLAGS=-dynamiclib -lsodium
 	TARGET=libnetcode-io.dylib
 endif
@@ -14,7 +16,7 @@ $(TARGET): netcode.o
 	$(CC) $(LINKER_FLAGS) -o $@ $^
 
 netcode.o: netcode.c
-	$(CC) $< -ffast-math -O3 -msse2 -Wall -Wextra -fPIC -DSODIUM_STATIC -c -g -o $@
+	$(CC) $< $(CC_FLAGS) -ffast-math -O3 -msse2 -Wall -Wextra -fPIC -DSODIUM_STATIC -c -g -o $@
 
 .PHONY: clean
 
