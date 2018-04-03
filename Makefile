@@ -13,7 +13,7 @@ else
 endif
 
 $(TARGET): netcode.o
-	$(CC) $(LINKER_FLAGS) -o $@ $^
+	$(CC) $^ $(LINKER_FLAGS) -o $@
 
 netcode.o: netcode.c
 	$(CC) $< $(CC_FLAGS) -ffast-math -O3 -msse2 -Wall -Wextra -fPIC -DSODIUM_STATIC -c -g -o $@
