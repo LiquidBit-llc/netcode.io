@@ -83,7 +83,7 @@ static void netcode_default_assert_handler( NETCODE_CONST char * condition, NETC
 }
 
 static int log_level = 0;
-static int (*printf_function)( NETCODE_CONST char *, ... ) = ( int (*)( NETCODE_CONST char *, ... ) ) printf;
+static int (*printf_function)( NETCODE_CONST char *) = ( int (*)( NETCODE_CONST char *) ) printf;
 void (*netcode_assert_function)( NETCODE_CONST char *, NETCODE_CONST char *, NETCODE_CONST char * file, int line ) = netcode_default_assert_handler;
 
 void netcode_log_level( int level )
@@ -91,7 +91,7 @@ void netcode_log_level( int level )
     log_level = level;
 }
 
-void netcode_set_printf_function( int (*function)( NETCODE_CONST char *, ... ) )
+void netcode_set_printf_function( int (*function)( NETCODE_CONST char *) )
 {
     netcode_assert( function );
     printf_function = function;
@@ -104,7 +104,7 @@ void netcode_set_assert_function( void (*function)( NETCODE_CONST char *, NETCOD
 
 #if NETCODE_ENABLE_LOGGING
 
-void netcode_printf( int level, NETCODE_CONST char * format, ... ) 
+void netcode_printf( int level, NETCODE_CONST char * format, ...) 
 {
     if ( level > log_level )
         return;
@@ -112,7 +112,7 @@ void netcode_printf( int level, NETCODE_CONST char * format, ... )
     va_start( args, format );
     char buffer[4*1024];
     vsprintf( buffer, format, args );
-    printf_function( "%s", buffer );
+    printf_function( buffer );
     va_end( args );
 }
 

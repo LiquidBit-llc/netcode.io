@@ -253,7 +253,7 @@ uint16_t netcode_server_get_port( struct netcode_server_t * server );
 
 void netcode_log_level( int level );
 
-void netcode_set_printf_function( int (*function)( NETCODE_CONST char *, ... ) );
+void netcode_set_printf_function( int (*function)( NETCODE_CONST char *) );
 
 extern void (*netcode_assert_function)( NETCODE_CONST char *, NETCODE_CONST char *, NETCODE_CONST char * file, int line );
 
