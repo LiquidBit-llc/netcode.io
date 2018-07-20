@@ -1,6 +1,7 @@
 LIBRARY netcode-io
     EXPORTS
         netcode_init
+        netcode_set_printf_function
         netcode_default_server_config
         netcode_server_create
         netcode_server_start
