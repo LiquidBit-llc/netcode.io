@@ -56,6 +56,7 @@
 #define NETCODE_CONNECT_TOKEN_BYTES 2048
 #define NETCODE_KEY_BYTES 32
 #define NETCODE_MAC_BYTES 16
+#define NETCODE_USER_DATA_BYTES 256
 #define NETCODE_MAX_SERVERS_PER_CONNECT 32
 
 #define NETCODE_CLIENT_STATE_CONNECT_TOKEN_EXPIRED              -6
@@ -70,7 +71,7 @@
 #define NETCODE_CLIENT_STATE_CONNECTED                          3
 
 #define NETCODE_MAX_CLIENTS         256
-#define NETCODE_MAX_PACKET_SIZE     1200
+#define NETCODE_MAX_PACKET_SIZE     1024
 
 #define NETCODE_LOG_LEVEL_NONE      0
 #define NETCODE_LOG_LEVEL_ERROR     1
@@ -80,14 +81,9 @@
 #define NETCODE_OK                  1
 #define NETCODE_ERROR               0
 
-#define NETCODE_NETWORK_NEXT        1
-
 #define NETCODE_ADDRESS_NONE        0
 #define NETCODE_ADDRESS_IPV4        1
 #define NETCODE_ADDRESS_IPV6        2
-#if NETCODE_NETWORK_NEXT
-#define NETCODE_ADDRESS_NEXT        3
-#endif // #if NETCODE_NETWORK_NEXT
 
 #ifdef __cplusplus
 #define NETCODE_CONST const
@@ -106,16 +102,9 @@ void netcode_term();
 
 struct netcode_address_t
 {
-    uint8_t type;
-    union
-    {
-        uint8_t ipv4[4];
-        uint16_t ipv6[8];
-#ifdef NETCODE_NETWORK_NEXT
-        uint64_t flow_id;
-#endif // #if NETCODE_NETWORK_NEXT
-    } data;
+    union { uint8_t ipv4[4]; uint16_t ipv6[8]; } data;
     uint16_t port;
+    uint8_t type;
 };
 
 int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcode_address_t * address );
@@ -154,7 +143,7 @@ void netcode_client_send_packet( struct netcode_client_t * client, NETCODE_CONST
 
 uint8_t * netcode_client_receive_packet( struct netcode_client_t * client, int * packet_bytes, uint64_t * packet_sequence );
 
-void netcode_client_free_packet( struct netcode_client_t * client, uint8_t * packet );
+void netcode_client_free_packet( struct netcode_client_t * client, void * packet );
 
 void netcode_client_disconnect( struct netcode_client_t * client );
 
@@ -176,6 +165,8 @@ void netcode_client_process_loopback_packet( struct netcode_client_t * client, N
 
 uint16_t netcode_client_get_port( struct netcode_client_t * client );
 
+struct netcode_address_t * netcode_client_server_address( struct netcode_client_t * client );
+
 int netcode_generate_connect_token( int num_server_addresses, 
                                     NETCODE_CONST char ** public_server_addresses, 
                                     NETCODE_CONST char ** internal_server_addresses, 
@@ -183,8 +174,8 @@ int netcode_generate_connect_token( int num_server_addresses,
                                     int timeout_seconds, 
                                     uint64_t client_id, 
                                     uint64_t protocol_id, 
-                                    uint64_t sequence, 
                                     NETCODE_CONST uint8_t * private_key, 
+                                    uint8_t * user_data, 
                                     uint8_t * connect_token );
 
 struct netcode_server_config_t
