@@ -22,8 +22,10 @@ LIBRARY netcode-io
         netcode_client_disconnect
         netcode_client_state
         netcode_client_update
+        netcode_client_process_packet
         netcode_client_send_packet
         netcode_client_send_packet
+        netcode_client_server_address
         netcode_client_receive_packet
         netcode_client_free_packet
         netcode_client_destroy
