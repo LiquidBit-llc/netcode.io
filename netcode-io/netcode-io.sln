@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "netcode-io", "netcode-io\netcode-io.vcxproj", "{38A74DF1-27E3-44CA-B248-E5738A1A73F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|NX32 = Debug|NX32
+		Debug|NX64 = Debug|NX64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Develop|NX32 = Develop|NX32
+		Develop|NX64 = Develop|NX64
+		Develop|x64 = Develop|x64
+		Develop|x86 = Develop|x86
+		Release|NX32 = Release|NX32
+		Release|NX64 = Release|NX64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|NX32.ActiveCfg = Debug|NX32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|NX32.Build.0 = Debug|NX32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|NX64.ActiveCfg = Debug|NX64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|NX64.Build.0 = Debug|NX64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|x64.ActiveCfg = Debug|x64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|x64.Build.0 = Debug|x64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|x86.ActiveCfg = Debug|Win32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|x86.Build.0 = Debug|Win32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|NX32.ActiveCfg = Develop|NX32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|NX32.Build.0 = Develop|NX32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|NX64.ActiveCfg = Develop|NX64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|NX64.Build.0 = Develop|NX64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|x64.ActiveCfg = Develop|x64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|x64.Build.0 = Develop|x64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|x86.ActiveCfg = Develop|Win32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|x86.Build.0 = Develop|Win32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|NX32.ActiveCfg = Release|NX32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|NX32.Build.0 = Release|NX32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|NX64.ActiveCfg = Release|NX64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|NX64.Build.0 = Release|NX64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|x64.ActiveCfg = Release|x64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|x64.Build.0 = Release|x64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|x86.ActiveCfg = Release|Win32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
