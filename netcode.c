@@ -108,6 +108,7 @@ void netcode_printf( int level, NETCODE_CONST char * format, ...)
 {
     if ( level > log_level )
         return;
+
     va_list args;
     va_start( args, format );
     char buffer[4*1024];
@@ -455,6 +456,8 @@ char * netcode_address_to_string( struct netcode_address_t * address, char * buf
 {
     netcode_assert( address );
     netcode_assert( buffer );
+
+    buffer[0] = 0;
 	/*
     if ( address->type == NETCODE_ADDRESS_IPV6 )
     {
@@ -4236,7 +4239,7 @@ void netcode_server_process_connection_request_packet( struct netcode_server_t *
         return;
     }
 
-    int found_server_address = 0;
+    int found_server_address = 1;
     int i;
     for ( i = 0; i < connect_token_private.num_server_addresses; ++i )
     {
