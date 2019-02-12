@@ -365,7 +365,7 @@ void netcode_default_free_function( void * context, void * pointer )
 
 int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcode_address_t * address )
 {
-    /*
+#ifndef NINTENDO_SWITCH
     netcode_assert( address_string_in );
     netcode_assert( address );
 
@@ -447,18 +447,17 @@ int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcod
     }
 
     return NETCODE_ERROR;
-    */
+#endif
 
     return NETCODE_OK;
 }
 
 char * netcode_address_to_string( struct netcode_address_t * address, char * buffer )
 {
+#ifndef NINTENDO_SWITCH
     netcode_assert( address );
     netcode_assert( buffer );
 
-    buffer[0] = 0;
-	/*
     if ( address->type == NETCODE_ADDRESS_IPV6 )
     {
         if ( address->port == 0 )
@@ -508,7 +507,9 @@ char * netcode_address_to_string( struct netcode_address_t * address, char * buf
         snprintf( buffer, NETCODE_MAX_ADDRESS_STRING_LENGTH, "%s", "NONE" );
         return buffer;
     }
-	*/
+#else
+    buffer[0] = 0;
+#endif
 	return buffer;
 }
 
@@ -639,7 +640,7 @@ void netcode_socket_destroy( struct netcode_socket_t * socket )
 
 int netcode_socket_create( struct netcode_socket_t * s, struct netcode_address_t * address, int send_buffer_size, int receive_buffer_size )
 {
-    /*
+#ifndef NINTENDO_SWITCH
     netcode_assert( s );
     netcode_assert( address );
     netcode_assert( netcode.initialized );
@@ -787,13 +788,14 @@ int netcode_socket_create( struct netcode_socket_t * s, struct netcode_address_t
 
 #endif
 
-    */
+#endif
+
     return NETCODE_SOCKET_ERROR_NONE;
 }
 
 void netcode_socket_send_packet( struct netcode_socket_t * socket, struct netcode_address_t * to, void * packet_data, int packet_bytes )
 {
-    /*
+#ifndef NINTENDO_SWITCH
     netcode_assert( socket );
     netcode_assert( socket->handle != 0 );
     netcode_assert( to );
@@ -828,12 +830,12 @@ void netcode_socket_send_packet( struct netcode_socket_t * socket, struct netcod
         int result = sendto( socket->handle, (NETCODE_CONST char*) packet_data, packet_bytes, 0, (struct sockaddr*) &socket_address, sizeof( struct sockaddr_in ) );
         (void) result;
     }
-    */
+#endif
 }
 
 int netcode_socket_receive_packet( struct netcode_socket_t * socket, struct netcode_address_t * from, void * packet_data, int max_packet_size )
 {
-    /*
+#ifndef NINTENDO_SWITCH
     netcode_assert( socket );
     netcode_assert( socket->handle != 0 );
     netcode_assert( from );
@@ -905,7 +907,9 @@ int netcode_socket_receive_packet( struct netcode_socket_t * socket, struct netc
     int bytes_read = result;
 
     return bytes_read;
-    */
+#else
+    return 0;
+#endif
 }
 
 // ----------------------------------------------------------------
@@ -2647,7 +2651,7 @@ int netcode_client_socket_create( struct netcode_socket_t * socket,
                                   int receive_buffer_size,
                                   NETCODE_CONST struct netcode_client_config_t * config )
 {
-	/*
+#ifndef NINTENDO_SWITCH
     netcode_assert( socket );
     netcode_assert( address );
     netcode_assert( config );
@@ -2670,7 +2674,7 @@ int netcode_client_socket_create( struct netcode_socket_t * socket,
             return 0;
         }
     }
-	*/
+#endif
 
     return 1;
 }
@@ -4239,7 +4243,7 @@ void netcode_server_process_connection_request_packet( struct netcode_server_t *
         return;
     }
 
-    int found_server_address = 1;
+    int found_server_address = 0;
     int i;
     for ( i = 0; i < connect_token_private.num_server_addresses; ++i )
     {
