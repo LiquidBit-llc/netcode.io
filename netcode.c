@@ -71,6 +71,21 @@
 
 // ------------------------------------------------------------------
 
+
+#ifdef NINTENDO_SWITCH
+
+uint16_t ntohs( uint16_t in )
+{
+    return (uint16_t)( ( ( in << 8 ) & 0xFF00 ) | ( ( in >> 8 ) & 0x00FF ) );
+}
+
+uint16_t htons( uint16_t in )
+{
+    return (uint16_t)( ( ( in << 8 ) & 0xFF00 ) | ( ( in >> 8 ) & 0x00FF ) );
+}
+
+#endif
+
 static void netcode_default_assert_handler( NETCODE_CONST char * condition, NETCODE_CONST char * function, NETCODE_CONST char * file, int line )
 {
     printf( "assert failed: ( %s ), function %s, file %s, line %d\n", condition, function, file, line );
@@ -158,6 +173,10 @@ void netcode_default_free_function( void * context, void * pointer )
 
     #include <iphlpapi.h>
     #pragma comment( lib, "IPHLPAPI.lib" )
+
+#elif defined(NINTENDO_SWITCH)
+
+#include <nn/socket.h>
     
 #elif NETCODE_PLATFORM == NETCODE_PLATFORM_MAC || NETCODE_PLATFORM == NETCODE_PLATFORM_UNIX
 
@@ -365,7 +384,6 @@ void netcode_default_free_function( void * context, void * pointer )
 
 int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcode_address_t * address )
 {
-#ifndef NINTENDO_SWITCH
     netcode_assert( address_string_in );
     netcode_assert( address );
 
@@ -404,6 +422,7 @@ int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcod
         address_string += 1;
     }
 
+#ifndef NINTENDO_SWITCH
     struct in6_addr sockaddr6;
     if ( inet_pton( AF_INET6, address_string, &sockaddr6 ) == 1 )
     {
@@ -415,6 +434,7 @@ int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcod
         }
         return NETCODE_OK;
     }
+#endif
 
     // otherwise it's probably an IPv4 address:
     // 1. look for ":portnum", if found save the portnum and strip it out
@@ -436,7 +456,12 @@ int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcod
     }
 
     struct sockaddr_in sockaddr4;
+
+#ifdef NINTENDO_SWITCH
+    if (nn::socket::InetPton( nn::socket::Family::Af_Inet, address_string, &sockaddr4.sin_addr ) == 1)
+#else
     if ( inet_pton( AF_INET, address_string, &sockaddr4.sin_addr ) == 1 )
+#endif
     {
         address->type = NETCODE_ADDRESS_IPV4;
         address->data.ipv4[3] = (uint8_t) ( ( sockaddr4.sin_addr.s_addr & 0xFF000000 ) >> 24 );
@@ -447,9 +472,6 @@ int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcod
     }
 
     return NETCODE_ERROR;
-#endif
-
-    return NETCODE_OK;
 }
 
 char * netcode_address_to_string( struct netcode_address_t * address, char * buffer )
@@ -622,6 +644,7 @@ struct netcode_socket_holder_t
 
 void netcode_socket_destroy( struct netcode_socket_t * socket )
 {
+#if !NINTENDO_SWITCH
     netcode_assert( socket );
     netcode_assert( netcode.initialized );
 
@@ -636,6 +659,7 @@ void netcode_socket_destroy( struct netcode_socket_t * socket )
         #endif
         socket->handle = 0;
     }
+#endif
 }
 
 int netcode_socket_create( struct netcode_socket_t * s, struct netcode_address_t * address, int send_buffer_size, int receive_buffer_size )
