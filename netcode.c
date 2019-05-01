@@ -1,7 +1,7 @@
 /*
     netcode.io reference implementation
 
-    Copyright © 2017, The Network Protocol Company, Inc.
+    Copyright © 2017 - 2019, The Network Protocol Company, Inc.
 
     Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
@@ -45,8 +45,8 @@
 #define NETCODE_CONNECT_TOKEN_PRIVATE_BYTES 1024
 #define NETCODE_CHALLENGE_TOKEN_BYTES 300
 #define NETCODE_VERSION_INFO_BYTES 13
-#define NETCODE_MAX_PACKET_BYTES 1200
-#define NETCODE_MAX_PAYLOAD_BYTES 1100
+#define NETCODE_MAX_PACKET_BYTES 1300
+#define NETCODE_MAX_PAYLOAD_BYTES 1200
 #define NETCODE_MAX_ADDRESS_STRING_LENGTH 256
 #define NETCODE_PACKET_QUEUE_SIZE 256
 #define NETCODE_REPLAY_PROTECTION_BUFFER_SIZE 256
@@ -1705,30 +1705,34 @@ void netcode_replay_protection_reset( struct netcode_replay_protection_t * repla
     memset( replay_protection->received_packet, 0xFF, sizeof( replay_protection->received_packet ) );
 }
 
-int netcode_replay_protection_packet_already_received( struct netcode_replay_protection_t * replay_protection, uint64_t sequence )
+int netcode_replay_protection_already_received( struct netcode_replay_protection_t * replay_protection, uint64_t sequence )
 {
     netcode_assert( replay_protection );
 
     if ( sequence + NETCODE_REPLAY_PROTECTION_BUFFER_SIZE <= replay_protection->most_recent_sequence )
         return 1;
     
+    int index = (int) ( sequence % NETCODE_REPLAY_PROTECTION_BUFFER_SIZE );
+
+    if ( replay_protection->received_packet[index] == 0xFFFFFFFFFFFFFFFFLL )
+        return 0;
+
+    if ( replay_protection->received_packet[index] >= sequence )
+        return 1;
+
+    return 0;
+}
+
+void netcode_replay_protection_advance_sequence( struct netcode_replay_protection_t * replay_protection, uint64_t sequence )
+{
+    netcode_assert( replay_protection );
+
     if ( sequence > replay_protection->most_recent_sequence )
         replay_protection->most_recent_sequence = sequence;
 
     int index = (int) ( sequence % NETCODE_REPLAY_PROTECTION_BUFFER_SIZE );
 
-    if ( replay_protection->received_packet[index] == 0xFFFFFFFFFFFFFFFFLL )
-    {
-        replay_protection->received_packet[index] = sequence;
-        return 0;
-    }
-
-    if ( replay_protection->received_packet[index] >= sequence )
-        return 1;
-    
     replay_protection->received_packet[index] = sequence;
-
-    return 0;
 }
 
 void * netcode_read_packet( uint8_t * buffer, 
@@ -1746,13 +1750,12 @@ void * netcode_read_packet( uint8_t * buffer,
     netcode_assert( sequence );
     netcode_assert( allowed_packets );
 
-    // todo: is this still necessary? probably not.
+    *sequence = 0;
+
     if ( allocate_function == NULL )
     {
         allocate_function = netcode_default_allocate_function;
     }
-
-    *sequence = 0;
 
     if ( buffer_length < 1 )
     {
@@ -1820,7 +1823,6 @@ void * netcode_read_packet( uint8_t * buffer,
             netcode_printf( NETCODE_LOG_LEVEL_DEBUG, "ignored connection request packet. connect token expired\n" );
             return NULL;
         }
-
 
         uint8_t packet_connect_token_nonce[NETCODE_CONNECT_TOKEN_NONCE_BYTES];
         netcode_read_bytes(&buffer, packet_connect_token_nonce, sizeof(packet_connect_token_nonce));
@@ -1914,13 +1916,13 @@ void * netcode_read_packet( uint8_t * buffer,
             (*sequence) |= ( uint64_t) ( value ) << ( 8 * i );
         }
 
-        // replay protection (optional)
+        // ignore the packet if it has already been received
 
         if ( replay_protection && packet_type >= NETCODE_CONNECTION_KEEP_ALIVE_PACKET )
         {
-            if ( netcode_replay_protection_packet_already_received( replay_protection, *sequence ) )
+            if ( netcode_replay_protection_already_received( replay_protection, *sequence ) )
             {
-                netcode_printf( NETCODE_LOG_LEVEL_DEBUG, "ignored connection payload packet. sequence %.16" PRIx64 " already received (replay protection)\n", *sequence );
+                netcode_printf( NETCODE_LOG_LEVEL_DEBUG, "ignored packet. sequence %.16" PRIx64 " already received (replay protection)\n", *sequence );
                 return NULL;
             }
         }
@@ -1957,6 +1959,13 @@ void * netcode_read_packet( uint8_t * buffer,
         }
 
         int decrypted_bytes = encrypted_bytes - NETCODE_MAC_BYTES;
+
+        // update the latest replay protection sequence #
+
+        if ( replay_protection && packet_type >= NETCODE_CONNECTION_KEEP_ALIVE_PACKET )
+        {
+            netcode_replay_protection_advance_sequence( replay_protection, *sequence );
+        }
 
         // process the per-packet type data that was just decrypted
         
@@ -3402,7 +3411,7 @@ uint8_t * netcode_client_receive_packet( struct netcode_client_t * client, int *
         netcode_assert( packet->packet_type == NETCODE_CONNECTION_PAYLOAD_PACKET );
         *packet_bytes = packet->payload_bytes;
         netcode_assert( *packet_bytes >= 0 );
-        netcode_assert( *packet_bytes <= NETCODE_MAX_PACKET_BYTES );
+        netcode_assert( *packet_bytes <= NETCODE_MAX_PAYLOAD_BYTES );
         return (uint8_t*) &packet->payload_data;
     }
     else
@@ -4820,6 +4829,19 @@ uint64_t netcode_server_client_id( struct netcode_server_t * server, int client_
     return server->client_id[client_index];
 }
 
+struct netcode_address_t * netcode_server_client_address( struct netcode_server_t * server, int client_index )
+{
+    netcode_assert( server );
+
+    if (!server->running)
+        return NULL;
+
+    if (client_index < 0 || client_index >= server->max_clients)
+        return NULL;
+
+    return &server->client_address[client_index];
+}
+
 uint64_t netcode_server_next_packet_sequence( struct netcode_server_t * server, int client_index )
 {
     netcode_assert( client_index >= 0 );
@@ -4901,7 +4923,7 @@ uint8_t * netcode_server_receive_packet( struct netcode_server_t * server, int c
         netcode_assert( packet->packet_type == NETCODE_CONNECTION_PAYLOAD_PACKET );
         *packet_bytes = packet->payload_bytes;
         netcode_assert( *packet_bytes >= 0 );
-        netcode_assert( *packet_bytes <= NETCODE_MAX_PACKET_BYTES );
+        netcode_assert( *packet_bytes <= NETCODE_MAX_PAYLOAD_BYTES );
         return (uint8_t*) &packet->payload_data;
     }
     else
@@ -6381,29 +6403,30 @@ void test_replay_protection()
         uint64_t sequence;
         for ( sequence = 0; sequence < MAX_SEQUENCE; ++sequence )
         {
-            check( netcode_replay_protection_packet_already_received( &replay_protection, sequence ) == 0 );
+            check( netcode_replay_protection_already_received( &replay_protection, sequence ) == 0 );
+            netcode_replay_protection_advance_sequence( &replay_protection, sequence );
         }
 
         // old packets outside buffer should be considered already received
 
-        check( netcode_replay_protection_packet_already_received( &replay_protection, 0 ) == 1 );
+        check( netcode_replay_protection_already_received( &replay_protection, 0 ) == 1 );
 
         // packets received a second time should be flagged already received
 
         for ( sequence = MAX_SEQUENCE - 10; sequence < MAX_SEQUENCE; ++sequence )
         {
-            check( netcode_replay_protection_packet_already_received( &replay_protection, sequence ) == 1 );
+            check( netcode_replay_protection_already_received( &replay_protection, sequence ) == 1 );
         }
 
         // jumping ahead to a much higher sequence should be considered not already received
 
-        check( netcode_replay_protection_packet_already_received( &replay_protection, MAX_SEQUENCE + NETCODE_REPLAY_PROTECTION_BUFFER_SIZE ) == 0 );
+        check( netcode_replay_protection_already_received( &replay_protection, MAX_SEQUENCE + NETCODE_REPLAY_PROTECTION_BUFFER_SIZE ) == 0 );
 
         // old packets should be considered already received
 
         for ( sequence = 0; sequence < MAX_SEQUENCE; ++sequence )
         {
-            check( netcode_replay_protection_packet_already_received( &replay_protection, sequence ) == 1 );
+            check( netcode_replay_protection_already_received( &replay_protection, sequence ) == 1 );
         }
     }
 }

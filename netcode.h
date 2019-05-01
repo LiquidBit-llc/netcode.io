@@ -1,7 +1,7 @@
 /*
     netcode.io reference implementation
 
-    Copyright © 2017, The Network Protocol Company, Inc.
+    Copyright © 2017 - 2019, The Network Protocol Company, Inc.
 
     Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
@@ -71,7 +71,7 @@
 #define NETCODE_CLIENT_STATE_CONNECTED                          3
 
 #define NETCODE_MAX_CLIENTS         256
-#define NETCODE_MAX_PACKET_SIZE     1024
+#define NETCODE_MAX_PACKET_SIZE     1200
 
 #define NETCODE_LOG_LEVEL_NONE      0
 #define NETCODE_LOG_LEVEL_ERROR     1
@@ -213,6 +213,8 @@ void netcode_server_update( struct netcode_server_t * server, double time );
 int netcode_server_client_connected( struct netcode_server_t * server, int client_index );
 
 uint64_t netcode_server_client_id( struct netcode_server_t * server, int client_index );
+
+struct netcode_address_t * netcode_server_client_address( struct netcode_server_t * server, int client_index );
 
 void netcode_server_disconnect_client( struct netcode_server_t * server, int client_index );
 

@@ -262,10 +262,6 @@ The following steps are taken when reading an encrypted packet, in this exact or
 
 * If the packet size is less than 1 + sequence bytes + 16, it cannot possibly be valid, ignore the packet.
 
-* If the packet type fails the replay protection test, ignore the packet. _See the section on replay protection below for details_.
-
-* If the per-packet type data fails to decrypt, ignore the packet.
-
 * If the per-packet type data size does not match the expected size for the packet type, ignore the packet.
 
     * 0 bytes for _connection denied packet_
@@ -274,6 +270,12 @@ The following steps are taken when reading an encrypted packet, in this exact or
     * 8 bytes for _connection keep-alive packet_
     * [1,1200] bytes for _connection payload packet_
     * 0 bytes for _connection disconnect packet_
+
+* If the packet type fails the replay protection already received test, ignore the packet. _See the section on replay protection below for details_.
+
+* If the per-packet type data fails to decrypt, ignore the packet.
+
+* Advance the most recent replay protection sequence #. _See the section on replay protection below for details_.
 
 * If all the above checks pass, the packet is processed.
 
@@ -293,9 +295,9 @@ The replay protection algorithm is as follows:
 
 1. Any packet older than the most recent sequence number received, minus the _replay buffer size_, is discarded on the receiver side.
 
-2. When a packet arrives that is newer than the most recent sequence number received, the most recent sequence number is updated on the receiver side and the packet is accepted.
+2. If a packet arrives that is within _replay buffer size_ of the most recent sequence number, it is accepted only if its sequence number has not already been received, otherwise it is ignored.
 
-3. If a packet arrives that is within _replay buffer size_ of the most recent sequence number, it is accepted only if its sequence number has not already been received, otherwise it is ignored.
+3. After the packet has been successfully decrypted, a) if the packet sequence # is in the replay buffer window that entry is set as received, and b) the most recent sequence number is updated if the packet sequence # is > than the previous most recent sequence number received.
 
 Replay protection is applied to the following packet types on both client and server:
 
