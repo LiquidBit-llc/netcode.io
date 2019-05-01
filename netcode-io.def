@@ -32,3 +32,4 @@ LIBRARY netcode-io
         netcode_client_destroy
         netcode_log_level
         netcode_term
+        crypto_sign_detached
