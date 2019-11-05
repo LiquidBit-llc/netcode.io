@@ -12,6 +12,8 @@ LIBRARY netcode-io
         netcode_server_receive_packet
         netcode_server_free_packet
         netcode_server_client_connected
+        netcode_server_client_user_data
+        netcode_server_client_address
         netcode_server_disconnect_client
         netcode_server_stop
         netcode_server_destroy
