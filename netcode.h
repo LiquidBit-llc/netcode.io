@@ -25,6 +25,10 @@
 #ifndef NETCODE_H
 #define NETCODE_H
 
+#if XBOXONE
+#include<xdk.h>
+#endif
+
 #include <stdint.h>
 
 #if    defined(__386__) || defined(i386)    || defined(__i386__)  \

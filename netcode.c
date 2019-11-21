@@ -32,7 +32,9 @@
 #include <time.h>
 
 #ifdef _MSC_VER
+#ifndef SODIUM_STATIC
 #define SODIUM_STATIC
+#endif//#ifndef SODIUM_STATIC (AVOIDING POTENTIAL REDEFINITIONS)
 #pragma warning(disable:4996)
 #endif // #ifdef _MSC_VER
 
@@ -155,8 +157,24 @@ void netcode_default_free_function( void * context, void * pointer )
 }
 
 // ------------------------------------------------------------------
+#if XBOXONE
 
-#if NETCODE_PLATFORM == NETCODE_PLATFORM_WINDOWS
+	#define NOMINMAX
+    #define _WINSOCK_DEPRECATED_NO_WARNINGS
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #include <ws2ipdef.h>
+
+    #pragma comment( lib, "WS2_32.lib" )
+    #pragma comment( lib, "IPHLPAPI.lib" )
+
+    #ifdef SetPort
+    #undef SetPort
+    #endif // #ifdef SetPort
+
+
+    #pragma comment( lib, "IPHLPAPI.lib" )
+#elif NETCODE_PLATFORM == NETCODE_PLATFORM_WINDOWS
 
     #define NOMINMAX
     #define _WINSOCK_DEPRECATED_NO_WARNINGS

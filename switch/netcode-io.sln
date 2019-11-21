@@ -11,14 +11,18 @@ Global
 		Debug|NX64 = Debug|NX64
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Debug|Durango = Debug|Durango
 		Develop|NX32 = Develop|NX32
 		Develop|NX64 = Develop|NX64
 		Develop|x64 = Develop|x64
 		Develop|x86 = Develop|x86
+		Develop|Durango = Develop|Durango
 		Release|NX32 = Release|NX32
 		Release|NX64 = Release|NX64
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		Release|Durango = Release|Durango
+		
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|NX32.ActiveCfg = Debug|NX32
@@ -29,6 +33,8 @@ Global
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|x64.Build.0 = Debug|x64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|x86.ActiveCfg = Debug|Win32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|x86.Build.0 = Debug|Win32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|Durango.ActiveCfg = Debug|Durango
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|Durango.Build.0 = Debug|Durango
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|NX32.ActiveCfg = Develop|NX32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|NX32.Build.0 = Develop|NX32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|NX64.ActiveCfg = Develop|NX64
@@ -37,6 +43,8 @@ Global
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|x64.Build.0 = Develop|x64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|x86.ActiveCfg = Develop|Win32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|x86.Build.0 = Develop|Win32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|Durango.ActiveCfg = Develop|Durango
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|Durango.Build.0 = Develop|Durango
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|NX32.ActiveCfg = Release|NX32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|NX32.Build.0 = Release|NX32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|NX64.ActiveCfg = Release|NX64
@@ -45,6 +53,8 @@ Global
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|x64.Build.0 = Release|x64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|x86.ActiveCfg = Release|Win32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|x86.Build.0 = Release|Win32
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|Durango.ActiveCfg = Release|Durango
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|Durango.Build.0 = Release|Durango
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

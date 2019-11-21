@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\Common\Import.props" />  
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" Condition="170604>=$(XdkEdition)">
+
+    <!-- ******************************
+    *    XSAPI 2.0 (Feb+ XDK)
+    *    library locations.
+    *    Flip with locations below
+    *    to compile against Feb+ XDKs
+    * -->
+    <ServicesWinMd>"$(TargetPlatformSdkPath)ExtensionSDKs\Xbox Services API\8.0\References\CommonConfiguration\neutral\microsoft.xbox.services.winmd"</ServicesWinMd>
+    <GameChatWinMd>$(TargetPlatformSdkPath)ExtensionSDKs\Xbox GameChat API\8.0\References\CommonConfiguration\neutral\Microsoft.Xbox.GameChat.winmd</GameChatWinMd>
+    <KinectWinMd>"$(TargetPlatformSdkPath)ExtensionSDKs\Microsoft.Kinect API\8.0\References\CommonConfiguration\neutral\Microsoft.Kinect.winmd"</KinectWinMd>
+    <GameChat2Include>""</GameChat2Include>
+    <GameChat2Lib>""</GameChat2Lib>
+
+    <SHARED_DEFINES></SHARED_DEFINES>
+  </PropertyGroup>
+
+  <PropertyGroup Label="UserMacros" Condition="$(XdkEdition)>170604">
+
+    <!-- ******************************
+    *    XSAPI 2.0 (Feb+ XDK)
+    *    library locations.
+    *    Flip with locations below
+    *    to compile against Feb+ XDKs
+    * -->
+    <ServicesWinMd>"$(TargetPlatformSdkPath)ExtensionSDKs\Xbox Services API\8.0\References\CommonConfiguration\neutral\microsoft.xbox.services.winmd"</ServicesWinMd>
+    <GameChatWinMd></GameChatWinMd>
+    <KinectWinMd>"$(TargetPlatformSdkPath)ExtensionSDKs\Microsoft.Kinect API\8.0\References\CommonConfiguration\neutral\Microsoft.Kinect.winmd"</KinectWinMd>
+    <GameChat2Include>"$(TargetPlatformSdkPath)\ExtensionSDKs\Xbox.Game.Chat.2.Cpp.API\8.0\DesignTime\CommonConfiguration\Neutral\Include\"</GameChat2Include>
+    <GameChat2Lib>"$(TargetPlatformSdkPath)\ExtensionSDKs\Xbox.Game.Chat.2.Cpp.API\8.0\DesignTime\CommonConfiguration\Neutral\Lib\GameChat2.lib"</GameChat2Lib>
+
+    <SHARED_DEFINES></SHARED_DEFINES>
+  </PropertyGroup>
+
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="ServicesWinMd">
+      <Value>$(ServicesWinMd)</Value>
+    </BuildMacro>  
+  </ItemGroup>
+</Project>
