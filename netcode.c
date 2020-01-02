@@ -166,14 +166,14 @@ void netcode_default_free_function( void * context, void * pointer )
     #include <ws2ipdef.h>
 
     #pragma comment( lib, "WS2_32.lib" )
-    #pragma comment( lib, "IPHLPAPI.lib" )
+    //#pragma comment( lib, "IPHLPAPI.lib" )
 
     #ifdef SetPort
     #undef SetPort
     #endif // #ifdef SetPort
 
 
-    #pragma comment( lib, "IPHLPAPI.lib" )
+    //#pragma comment( lib, "IPHLPAPI.lib" )
 #elif NETCODE_PLATFORM == NETCODE_PLATFORM_WINDOWS
 
     #define NOMINMAX
