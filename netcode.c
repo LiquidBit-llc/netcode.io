@@ -195,7 +195,23 @@ void netcode_default_free_function( void * context, void * pointer )
 #elif defined(NINTENDO_SWITCH)
 
 #include <nn/socket.h>
-    
+
+#elif defined _ORBIS_
+
+	#include <kernel.h>
+	#include <net.h>
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <fcntl.h>
+    #include <arpa/inet.h>
+    #include <unistd.h>
+    #include <errno.h>
+
+    #include <ifaddrs.h>
+    #include <netinet/in.h>
+#include <netinet/tcp.h>
+	
 #elif NETCODE_PLATFORM == NETCODE_PLATFORM_MAC || NETCODE_PLATFORM == NETCODE_PLATFORM_UNIX
 
     #include <netdb.h>
@@ -441,8 +457,12 @@ int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcod
     }
 
 #ifndef NINTENDO_SWITCH
-    struct in6_addr sockaddr6;
+	struct in6_addr sockaddr6;
+#ifdef _ORBIS_
+	if( sceNetInetPton(AF_INET6, address_string, &sockaddr6) == 1)
+#else
     if ( inet_pton( AF_INET6, address_string, &sockaddr6 ) == 1 )
+#endif //_ORBIS_
     {
         address->type = NETCODE_ADDRESS_IPV6;
         int i;
@@ -477,6 +497,8 @@ int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcod
 
 #ifdef NINTENDO_SWITCH
     if (nn::socket::InetPton( nn::socket::Family::Af_Inet, address_string, &sockaddr4.sin_addr ) == 1)
+#elif defined _ORBIS_
+	if (sceNetInetPton(AF_INET, address_string, &sockaddr4.sin_addr ) == 1 )
 #else
     if ( inet_pton( AF_INET, address_string, &sockaddr4.sin_addr ) == 1 )
 #endif
