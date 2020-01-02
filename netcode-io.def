@@ -17,6 +17,10 @@ LIBRARY netcode-io
         netcode_server_disconnect_client
         netcode_server_stop
         netcode_server_destroy
+        netcode_server_connect_loopback_client
+        netcode_server_disconnect_loopback_client
+        netcode_server_client_loopback
+        netcode_server_process_loopback_packet
         netcode_generate_connect_token
         netcode_default_client_config
         netcode_client_create
@@ -32,6 +36,10 @@ LIBRARY netcode-io
         netcode_client_receive_packet
         netcode_client_free_packet
         netcode_client_destroy
+        netcode_client_connect_loopback
+        netcode_client_disconnect_loopback
+        netcode_client_loopback
+        netcode_client_process_loopback_packet
         netcode_log_level
         netcode_term
         crypto_sign_detached
