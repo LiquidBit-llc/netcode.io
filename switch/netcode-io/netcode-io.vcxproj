@@ -510,7 +510,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ORBIS'">
     <ClCompile>
-      <PreprocessorDefinitions>_ORBIS_;SCE_SAMPLE_UTIL_ASSERTS_ENABLED=1;SCE_SAMPLE_UTIL_RELEASE=1;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_ORBIS_;DISABLE_IPV6;SCE_SAMPLE_UTIL_ASSERTS_ENABLED=1;SCE_SAMPLE_UTIL_RELEASE=1;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OptimizationLevel>Level2</OptimizationLevel>
       <AdditionalUsingDirectories>$(SolutionDir);$(SolutionDir)src\libsodium\include\sodium;$(SolutionDir)src\libsodium\include\sodium;$(SolutionDir)src\libsodium\include</AdditionalUsingDirectories>
       <AdditionalIncludeDirectories>$(SCE_ORBIS_SDK_DIR)\target\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

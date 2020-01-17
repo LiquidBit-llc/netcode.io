@@ -208,9 +208,6 @@ void netcode_default_free_function( void * context, void * pointer )
     #include <unistd.h>
     #include <errno.h>
 
-    #include <ifaddrs.h>
-    #include <netinet/in.h>
-#include <netinet/tcp.h>
 	
 #elif NETCODE_PLATFORM == NETCODE_PLATFORM_MAC || NETCODE_PLATFORM == NETCODE_PLATFORM_UNIX
 
@@ -455,14 +452,11 @@ int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcod
         }
         address_string += 1;
     }
-
+#ifndef DISABLE_IPV6
 #ifndef NINTENDO_SWITCH
 	struct in6_addr sockaddr6;
-#ifdef _ORBIS_
-	if( sceNetInetPton(AF_INET6, address_string, &sockaddr6) == 1)
-#else
     if ( inet_pton( AF_INET6, address_string, &sockaddr6 ) == 1 )
-#endif //_ORBIS_
+
     {
         address->type = NETCODE_ADDRESS_IPV6;
         int i;
@@ -472,6 +466,7 @@ int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcod
         }
         return NETCODE_OK;
     }
+#endif
 #endif
 
     // otherwise it's probably an IPv4 address:
@@ -522,6 +517,7 @@ char * netcode_address_to_string( struct netcode_address_t * address, char * buf
 
     if ( address->type == NETCODE_ADDRESS_IPV6 )
     {
+#ifndef DISABLE_IPV6
         if ( address->port == 0 )
         {
             uint16_t ipv6_network_order[8];
@@ -542,6 +538,9 @@ char * netcode_address_to_string( struct netcode_address_t * address, char * buf
             snprintf( buffer, NETCODE_MAX_ADDRESS_STRING_LENGTH, "[%s]:%d", address_string, address->port );
             return buffer;
         }
+#else
+    	return NULL; //ORBIS does not SUPPORT IPv6
+#endif
     }
     else if ( address->type == NETCODE_ADDRESS_IPV4 )
     {
@@ -731,6 +730,7 @@ int netcode_socket_create( struct netcode_socket_t * s, struct netcode_address_t
 
     if ( address->type == NETCODE_ADDRESS_IPV6 )
     {
+#ifndef DISABLE_IPV6
         int yes = 1;
         if ( setsockopt( s->handle, IPPROTO_IPV6, IPV6_V6ONLY, (char*)&yes, sizeof(yes) ) != 0 )
         {
@@ -738,6 +738,7 @@ int netcode_socket_create( struct netcode_socket_t * s, struct netcode_address_t
             netcode_socket_destroy( s );
             return NETCODE_SOCKET_ERROR_SOCKOPT_IPV6_ONLY_FAILED;
         }
+#endif
     }
 
     // increase socket send and receive buffer sizes
@@ -760,6 +761,7 @@ int netcode_socket_create( struct netcode_socket_t * s, struct netcode_address_t
 
     if ( address->type == NETCODE_ADDRESS_IPV6 )
     {
+#ifndef DISABLE_IPV6
         struct sockaddr_in6 socket_address;
         memset( &socket_address, 0, sizeof( struct sockaddr_in6 ) );
         socket_address.sin6_family = AF_INET6;
@@ -776,6 +778,7 @@ int netcode_socket_create( struct netcode_socket_t * s, struct netcode_address_t
             netcode_socket_destroy( s );
             return NETCODE_SOCKET_ERROR_BIND_IPV6_FAILED;
         }
+#endif
     }
     else
     {
@@ -802,6 +805,7 @@ int netcode_socket_create( struct netcode_socket_t * s, struct netcode_address_t
     {
         if ( address->type == NETCODE_ADDRESS_IPV6 )
         {
+#ifndef DISABLE_IPV6
             struct sockaddr_in6 sin;
             socklen_t len = sizeof( sin );
             if ( getsockname( s->handle, (struct sockaddr*)&sin, &len ) == -1 )
@@ -811,6 +815,7 @@ int netcode_socket_create( struct netcode_socket_t * s, struct netcode_address_t
                 return NETCODE_SOCKET_ERROR_GET_SOCKNAME_IPV6_FAILED;
             }
             s->address.port = ntohs( sin.sin6_port );
+#endif
         }
         else
         {
@@ -869,6 +874,7 @@ void netcode_socket_send_packet( struct netcode_socket_t * socket, struct netcod
 
     if ( to->type == NETCODE_ADDRESS_IPV6 )
     {
+    #ifndef DISABLE_IPV6
         struct sockaddr_in6 socket_address;
         memset( &socket_address, 0, sizeof( socket_address ) );
         socket_address.sin6_family = AF_INET6;
@@ -880,6 +886,7 @@ void netcode_socket_send_packet( struct netcode_socket_t * socket, struct netcod
         socket_address.sin6_port = htons( to->port );
         int result = sendto( socket->handle, (char*) packet_data, packet_bytes, 0, (struct sockaddr*) &socket_address, sizeof( struct sockaddr_in6 ) );
         (void) result;
+#endif
     }
     else if ( to->type == NETCODE_ADDRESS_IPV4 )
     {
@@ -941,6 +948,7 @@ int netcode_socket_receive_packet( struct netcode_socket_t * socket, struct netc
 
     if ( sockaddr_from.ss_family == AF_INET6 )
     {
+#ifndef DISABLE_IPV6
         struct sockaddr_in6 * addr_ipv6 = (struct sockaddr_in6*) &sockaddr_from;
         from->type = NETCODE_ADDRESS_IPV6;
         int i;
@@ -949,6 +957,7 @@ int netcode_socket_receive_packet( struct netcode_socket_t * socket, struct netc
             from->data.ipv6[i] = ntohs( ( (uint16_t*) &addr_ipv6->sin6_addr ) [i] );
         }
         from->port = ntohs( addr_ipv6->sin6_port );
+#endif
     }
     else if ( sockaddr_from.ss_family == AF_INET )
     {
