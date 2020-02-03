@@ -100,9 +100,15 @@ extern "C" {
 #endif
 #endif
 
-int netcode_init();
+#if defined (_ORBIS_)
+#define EXPORT __declspec( dllexport )
+#else
+#define EXPORT
+#endif
+	
+EXPORT int netcode_init();
 
-void netcode_term();
+EXPORT void netcode_term();
 
 struct netcode_address_t
 {
@@ -111,11 +117,11 @@ struct netcode_address_t
     uint8_t type;
 };
 
-int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcode_address_t * address );
+EXPORT int netcode_parse_address( NETCODE_CONST char * address_string_in, struct netcode_address_t * address );
 
-char * netcode_address_to_string( struct netcode_address_t * address, char * buffer );
+EXPORT char * netcode_address_to_string( struct netcode_address_t * address, char * buffer );
 
-int netcode_address_equal( struct netcode_address_t * a, struct netcode_address_t * b );
+EXPORT int netcode_address_equal( struct netcode_address_t * a, struct netcode_address_t * b );
 
 struct netcode_client_config_t
 {
@@ -131,47 +137,47 @@ struct netcode_client_config_t
     int (*receive_packet_override)(void*,struct netcode_address_t*,uint8_t*,int);
 };
 
-void netcode_default_client_config( struct netcode_client_config_t * config );
+EXPORT void netcode_default_client_config( struct netcode_client_config_t * config );
 
-struct netcode_client_t * netcode_client_create( NETCODE_CONST char * address, NETCODE_CONST struct netcode_client_config_t * config, double time );
+EXPORT struct netcode_client_t * netcode_client_create( NETCODE_CONST char * address, NETCODE_CONST struct netcode_client_config_t * config, double time );
 
-void netcode_client_destroy( struct netcode_client_t * client );
+EXPORT void netcode_client_destroy( struct netcode_client_t * client );
 
-void netcode_client_connect( struct netcode_client_t * client, uint8_t * connect_token );
+EXPORT void netcode_client_connect( struct netcode_client_t * client, uint8_t * connect_token );
 
-void netcode_client_update( struct netcode_client_t * client, double time );
+EXPORT void netcode_client_update( struct netcode_client_t * client, double time );
 
-uint64_t netcode_client_next_packet_sequence( struct netcode_client_t * client );
+EXPORT uint64_t netcode_client_next_packet_sequence( struct netcode_client_t * client );
 
-void netcode_client_send_packet( struct netcode_client_t * client, NETCODE_CONST uint8_t * packet_data, int packet_bytes );
+EXPORT void netcode_client_send_packet( struct netcode_client_t * client, NETCODE_CONST uint8_t * packet_data, int packet_bytes );
 
-uint8_t * netcode_client_receive_packet( struct netcode_client_t * client, int * packet_bytes, uint64_t * packet_sequence );
+EXPORT uint8_t * netcode_client_receive_packet( struct netcode_client_t * client, int * packet_bytes, uint64_t * packet_sequence );
 
-void netcode_client_free_packet( struct netcode_client_t * client, void * packet );
+EXPORT void netcode_client_free_packet( struct netcode_client_t * client, void * packet );
 
-void netcode_client_disconnect( struct netcode_client_t * client );
+EXPORT void netcode_client_disconnect( struct netcode_client_t * client );
 
-int netcode_client_state( struct netcode_client_t * client );
+EXPORT int netcode_client_state( struct netcode_client_t * client );
 
-int netcode_client_index( struct netcode_client_t * client );
+EXPORT int netcode_client_index( struct netcode_client_t * client );
 
-int netcode_client_max_clients( struct netcode_client_t * client );
+EXPORT int netcode_client_max_clients( struct netcode_client_t * client );
 
-void netcode_client_connect_loopback( struct netcode_client_t * client, int client_index, int max_clients );
+EXPORT void netcode_client_connect_loopback( struct netcode_client_t * client, int client_index, int max_clients );
 
-void netcode_client_disconnect_loopback( struct netcode_client_t * client );
+EXPORT void netcode_client_disconnect_loopback( struct netcode_client_t * client );
 
-void netcode_client_process_packet( struct netcode_client_t * client, struct netcode_address_t * from, uint8_t * packet_data, int packet_bytes );
+EXPORT void netcode_client_process_packet( struct netcode_client_t * client, struct netcode_address_t * from, uint8_t * packet_data, int packet_bytes );
 
-int netcode_client_loopback( struct netcode_client_t * client );
+EXPORT int netcode_client_loopback( struct netcode_client_t * client );
 
-void netcode_client_process_loopback_packet( struct netcode_client_t * client, NETCODE_CONST uint8_t * packet_data, int packet_bytes, uint64_t packet_sequence );
+EXPORT void netcode_client_process_loopback_packet( struct netcode_client_t * client, NETCODE_CONST uint8_t * packet_data, int packet_bytes, uint64_t packet_sequence );
 
-uint16_t netcode_client_get_port( struct netcode_client_t * client );
+EXPORT uint16_t netcode_client_get_port( struct netcode_client_t * client );
 
-struct netcode_address_t * netcode_client_server_address( struct netcode_client_t * client );
+EXPORT struct netcode_address_t * netcode_client_server_address( struct netcode_client_t * client );
 
-int netcode_generate_connect_token( int num_server_addresses, 
+EXPORT int netcode_generate_connect_token( int num_server_addresses, 
                                     NETCODE_CONST char ** public_server_addresses, 
                                     NETCODE_CONST char ** internal_server_addresses, 
                                     int expire_seconds,
@@ -198,59 +204,59 @@ struct netcode_server_config_t
     int (*receive_packet_override)(void*,struct netcode_address_t*,uint8_t*,int);
 };
 
-void netcode_default_server_config( struct netcode_server_config_t * config );
+EXPORT void netcode_default_server_config( struct netcode_server_config_t * config );
 
-struct netcode_server_t * netcode_server_create( NETCODE_CONST char * server_address, NETCODE_CONST struct netcode_server_config_t * config, double time );
+EXPORT struct netcode_server_t * netcode_server_create( NETCODE_CONST char * server_address, NETCODE_CONST struct netcode_server_config_t * config, double time );
 
-void netcode_server_destroy( struct netcode_server_t * server );
+EXPORT void netcode_server_destroy( struct netcode_server_t * server );
 
-void netcode_server_start( struct netcode_server_t * server, int max_clients );
+EXPORT void netcode_server_start( struct netcode_server_t * server, int max_clients );
 
-void netcode_server_stop( struct netcode_server_t * server );
+EXPORT void netcode_server_stop( struct netcode_server_t * server );
 
-int netcode_server_running( struct netcode_server_t * server );
+EXPORT int netcode_server_running( struct netcode_server_t * server );
 
-int netcode_server_max_clients( struct netcode_server_t * server );
+EXPORT int netcode_server_max_clients( struct netcode_server_t * server );
 
-void netcode_server_update( struct netcode_server_t * server, double time );
+EXPORT void netcode_server_update( struct netcode_server_t * server, double time );
 
-int netcode_server_client_connected( struct netcode_server_t * server, int client_index );
+EXPORT int netcode_server_client_connected( struct netcode_server_t * server, int client_index );
 
-uint64_t netcode_server_client_id( struct netcode_server_t * server, int client_index );
+EXPORT uint64_t netcode_server_client_id( struct netcode_server_t * server, int client_index );
 
-struct netcode_address_t * netcode_server_client_address( struct netcode_server_t * server, int client_index );
+EXPORT struct netcode_address_t * netcode_server_client_address( struct netcode_server_t * server, int client_index );
 
-void netcode_server_disconnect_client( struct netcode_server_t * server, int client_index );
+EXPORT void netcode_server_disconnect_client( struct netcode_server_t * server, int client_index );
 
-void netcode_server_disconnect_all_clients( struct netcode_server_t * server );
+EXPORT void netcode_server_disconnect_all_clients( struct netcode_server_t * server );
 
-uint64_t netcode_server_next_packet_sequence( struct netcode_server_t * server, int client_index );
+EXPORT uint64_t netcode_server_next_packet_sequence( struct netcode_server_t * server, int client_index );
 
-void netcode_server_send_packet( struct netcode_server_t * server, int client_index, NETCODE_CONST uint8_t * packet_data, int packet_bytes );
+EXPORT void netcode_server_send_packet( struct netcode_server_t * server, int client_index, NETCODE_CONST uint8_t * packet_data, int packet_bytes );
 
-uint8_t * netcode_server_receive_packet( struct netcode_server_t * server, int client_index, int * packet_bytes, uint64_t * packet_sequence );
+EXPORT uint8_t * netcode_server_receive_packet( struct netcode_server_t * server, int client_index, int * packet_bytes, uint64_t * packet_sequence );
 
-void netcode_server_free_packet( struct netcode_server_t * server, void * packet );
+EXPORT void netcode_server_free_packet( struct netcode_server_t * server, void * packet );
 
-int netcode_server_num_connected_clients( struct netcode_server_t * server );
+EXPORT int netcode_server_num_connected_clients( struct netcode_server_t * server );
 
-void * netcode_server_client_user_data( struct netcode_server_t * server, int client_index );
+EXPORT void * netcode_server_client_user_data( struct netcode_server_t * server, int client_index );
 
-void netcode_server_process_packet( struct netcode_server_t * server, struct netcode_address_t * from, uint8_t * packet_data, int packet_bytes );
+EXPORT void netcode_server_process_packet( struct netcode_server_t * server, struct netcode_address_t * from, uint8_t * packet_data, int packet_bytes );
 
-void netcode_server_connect_loopback_client( struct netcode_server_t * server, int client_index, uint64_t client_id, NETCODE_CONST uint8_t * user_data );
+EXPORT void netcode_server_connect_loopback_client( struct netcode_server_t * server, int client_index, uint64_t client_id, NETCODE_CONST uint8_t * user_data );
 
-void netcode_server_disconnect_loopback_client( struct netcode_server_t * server, int client_index );
+EXPORT void netcode_server_disconnect_loopback_client( struct netcode_server_t * server, int client_index );
 
-int netcode_server_client_loopback( struct netcode_server_t * server, int client_index );
+EXPORT int netcode_server_client_loopback( struct netcode_server_t * server, int client_index );
 
-void netcode_server_process_loopback_packet( struct netcode_server_t * server, int client_index, NETCODE_CONST uint8_t * packet_data, int packet_bytes, uint64_t packet_sequence );
+EXPORT void netcode_server_process_loopback_packet( struct netcode_server_t * server, int client_index, NETCODE_CONST uint8_t * packet_data, int packet_bytes, uint64_t packet_sequence );
 
-uint16_t netcode_server_get_port( struct netcode_server_t * server );
+EXPORT uint16_t netcode_server_get_port( struct netcode_server_t * server );
 
-void netcode_log_level( int level );
+EXPORT void netcode_log_level( int level );
 
-void netcode_set_printf_function( int (*function)( NETCODE_CONST char *) );
+EXPORT void netcode_set_printf_function( int (*function)( NETCODE_CONST char *) );
 
 extern void (*netcode_assert_function)( NETCODE_CONST char *, NETCODE_CONST char *, NETCODE_CONST char * file, int line );
 
@@ -268,16 +274,16 @@ do                                                                              
 #define netcode_assert( ignore ) ((void)0)
 #endif
 
-void netcode_set_assert_function( void (*function)( NETCODE_CONST char * /*condition*/, 
+EXPORT void netcode_set_assert_function( void (*function)( NETCODE_CONST char * /*condition*/, 
                                   NETCODE_CONST char * /*function*/, 
                                   NETCODE_CONST char * /*file*/, 
                                   int /*line*/ ) );
 
-void netcode_random_bytes( uint8_t * data, int bytes );
+EXPORT void netcode_random_bytes( uint8_t * data, int bytes );
 
-void netcode_sleep( double seconds );
+EXPORT void netcode_sleep( double seconds );
 
-double netcode_time();
+EXPORT double netcode_time();
 
 #ifdef __cplusplus
 }
