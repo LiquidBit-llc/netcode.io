@@ -1,71 +1,82 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "netcode-io", "netcode-io\netcode-io.vcxproj", "{38A74DF1-27E3-44CA-B248-E5738A1A73F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Durango = Debug|Durango
+		Debug|GGP = Debug|GGP
 		Debug|NX32 = Debug|NX32
 		Debug|NX64 = Debug|NX64
+		Debug|ORBIS = Debug|ORBIS
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Debug|Durango = Debug|Durango
-		Debug|ORBIS = Debug|ORBIS
+		Develop|Durango = Develop|Durango
+		Develop|GGP = Develop|GGP
 		Develop|NX32 = Develop|NX32
 		Develop|NX64 = Develop|NX64
+		Develop|ORBIS = Develop|ORBIS
 		Develop|x64 = Develop|x64
 		Develop|x86 = Develop|x86
-		Develop|Durango = Develop|Durango
-		Develop|ORBIS = Develop|ORBIS
+		Release|Durango = Release|Durango
+		Release|GGP = Release|GGP
 		Release|NX32 = Release|NX32
 		Release|NX64 = Release|NX64
+		Release|ORBIS = Release|ORBIS
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-		Release|Durango = Release|Durango
-		Release|ORBIS = Release|ORBIS
-		
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|Durango.ActiveCfg = Debug|Durango
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|Durango.Build.0 = Debug|Durango
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|GGP.ActiveCfg = Debug|GGP
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|GGP.Build.0 = Debug|GGP
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|NX32.ActiveCfg = Debug|NX32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|NX32.Build.0 = Debug|NX32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|NX64.ActiveCfg = Debug|NX64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|NX64.Build.0 = Debug|NX64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|ORBIS.ActiveCfg = Debug|ORBIS
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|ORBIS.Build.0 = Debug|ORBIS
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|x64.ActiveCfg = Debug|x64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|x64.Build.0 = Debug|x64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|x86.ActiveCfg = Debug|Win32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|x86.Build.0 = Debug|Win32
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|Durango.ActiveCfg = Debug|Durango
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|Durango.Build.0 = Debug|Durango
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|ORBIS.ActiveCfg = Debug|ORBIS
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Debug|ORBIS.Build.0 = Debug|ORBIS
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|Durango.ActiveCfg = Develop|Durango
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|Durango.Build.0 = Develop|Durango
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|GGP.ActiveCfg = Develop|GGP
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|GGP.Build.0 = Develop|GGP
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|NX32.ActiveCfg = Develop|NX32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|NX32.Build.0 = Develop|NX32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|NX64.ActiveCfg = Develop|NX64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|NX64.Build.0 = Develop|NX64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|ORBIS.ActiveCfg = Develop|ORBIS
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|ORBIS.Build.0 = Develop|ORBIS
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|x64.ActiveCfg = Develop|x64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|x64.Build.0 = Develop|x64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|x86.ActiveCfg = Develop|Win32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|x86.Build.0 = Develop|Win32
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|Durango.ActiveCfg = Develop|Durango
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|Durango.Build.0 = Develop|Durango
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|ORBIS.ActiveCfg = Develop|ORBIS
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Develop|ORBIS.Build.0 = Develop|ORBIS
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|Durango.ActiveCfg = Release|Durango
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|Durango.Build.0 = Release|Durango
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|GGP.ActiveCfg = Release|GGP
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|GGP.Build.0 = Release|GGP
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|NX32.ActiveCfg = Release|NX32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|NX32.Build.0 = Release|NX32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|NX64.ActiveCfg = Release|NX64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|NX64.Build.0 = Release|NX64
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|ORBIS.ActiveCfg = Release|ORBIS
+		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|ORBIS.Build.0 = Release|ORBIS
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|x64.ActiveCfg = Release|x64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|x64.Build.0 = Release|x64
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|x86.ActiveCfg = Release|Win32
 		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|x86.Build.0 = Release|Win32
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|Durango.ActiveCfg = Release|Durango
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|Durango.Build.0 = Release|Durango
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|ORBIS.ActiveCfg = Release|ORBIS
-		{38A74DF1-27E3-44CA-B248-E5738A1A73F3}.Release|ORBIS.Build.0 = Release|ORBIS
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7CBFA6FC-92A0-4963-8894-23CA78DF5A39}
 	EndGlobalSection
 EndGlobal

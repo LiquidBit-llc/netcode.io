@@ -1,13 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|GGP">
+      <Configuration>Debug</Configuration>
+      <Platform>GGP</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Develop|GGP">
+      <Configuration>Develop</Configuration>
+      <Platform>GGP</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Develop|Win32">
       <Configuration>Develop</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|GGP">
+      <Configuration>Release</Configuration>
+      <Platform>GGP</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -221,6 +233,13 @@
     <NintendoSdkSpec>NX</NintendoSdkSpec>
     <NintendoSdkBuildType>Release</NintendoSdkBuildType>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|GGP'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -238,6 +257,15 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Develop|GGP'">
+    <PlatformToolset>Ggp_Clang</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|GGP'">
+    <PlatformToolset>Ggp_Clang</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|GGP'">
+    <PlatformToolset>Ggp_Clang</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -362,6 +390,14 @@
     <OutDir>$(SolutionDir)Build\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)Build\$(Configuration)\$(Platform)\Intermediate\</IntDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|GGP'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\..\..\libsodium\src\libsodium\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\$(Platform)\Intermediate\</IntDir>
+    <LibraryPath>
+    </LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -453,6 +489,17 @@
       <PreprocessorDefinitions>NINTENDO_SWITCH;NN_SDK_BUILD_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|GGP'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;_LIB;_GNU_SOURCE;VK_USE_PLATFORM_GGP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>FullDebugLldbSpecific</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>sodium.so</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir);$(GgpLibDir);%(AdditionalLibraryDirectories);..\..\..\libsodium\GGP\ReleaseDLL</AdditionalLibraryDirectories>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Durango'">
     <Link>
